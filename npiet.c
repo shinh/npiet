@@ -391,10 +391,10 @@ alloc_stack_space (int val)
     max_stack = val;
     stack = (long *) calloc (val, sizeof (long));
   } else {
-    long *new_stack = (long *) calloc (val, sizeof (long));
+    max_stack = val * 2;
+    long *new_stack = (long *) calloc (max_stack, sizeof (long));
     memcpy (new_stack, stack, num_stack * sizeof (long));
     free (stack);
-    max_stack = val;
     stack = new_stack;
   }
   dprintf ("deb: stack extended to %d entries (num_stack is %d)\n",
