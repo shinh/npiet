@@ -407,6 +407,8 @@ tdump_stack ()
 {
   int i;
 
+  if (!trace)
+    return;
   if (num_stack == 0) {
     tprintf ("trace: stack is empty");
   } else {
