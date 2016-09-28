@@ -1209,7 +1209,7 @@ read_gif (char *fname)
   GifFileType *gif;
   GifRecordType rtype;
   GifColorType *gcol;
-  int i, j, width, height, col_idx;
+  int i, j, width, height, col_idx, err;
 
   if (! strcmp (fname, "-")) {
     /* read from stdin: */
@@ -1217,21 +1217,21 @@ read_gif (char *fname)
     return -1;
   }
 
-  if (! (gif = DGifOpenFileName (fname))) {
+  if (! (gif = DGifOpenFileName (fname, &err))) {
     /* return error silently: */
     return -1;
   }
   
   if (DGifGetRecordType (gif, &rtype) == GIF_ERROR) {
-    PrintGifError ();
-    DGifCloseFile (gif);
+    puts (GifErrorString (err));
+    DGifCloseFile (gif, &err);
     return -1;
   }
 
   if (rtype != IMAGE_DESC_RECORD_TYPE 
       || DGifGetImageDesc (gif) == GIF_ERROR) {
     fprintf (stderr, "error: unknown gif format - exiting\n");
-    DGifCloseFile (gif);
+    DGifCloseFile (gif, &err);
     exit (-1);
   }
 
@@ -1297,7 +1297,7 @@ read_gif (char *fname)
     }
   }
 
-  DGifCloseFile (gif);
+  DGifCloseFile (gif, &err);
 
   return 0;
 }
