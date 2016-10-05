@@ -405,7 +405,7 @@ alloc_stack_space (int val)
 void
 tdump_stack ()
 {
-  int i;
+  int i, n;
 
   if (!trace)
     return;
@@ -414,7 +414,10 @@ tdump_stack ()
   } else {
     tprintf ("trace: stack (%d values):", num_stack);
   }
-  for (i = 0; i < num_stack; i++) {
+  n = num_stack;
+  if (n > 10)
+    n = 10;
+  for (i = 0; i < n; i++) {
     tprintf (" %ld", stack [num_stack - i - 1]);
   }
   tprintf ("\n");
